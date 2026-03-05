@@ -10,6 +10,9 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
+    "lint:fix": "expo lint --fix",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
     "commit": "git-cz"
   },
   "dependencies": {
@@ -41,7 +44,11 @@
   },
   "devDependencies": {
     "@types/react": "~19.2.2",
+    "eslint": "^9.39.3",
+    "eslint-config-expo": "~55.0.0",
+    "eslint-config-prettier": "^10.1.8",
     "git-cz": "^4.9.0",
+    "prettier": "^3.6.2",
     "typescript": "~5.9.2"
   },
   "private": true
