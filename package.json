@@ -53,7 +53,17 @@
     "git-cz": "^4.9.0",
     "husky": "^9.1.7",
     "prettier": "^3.6.2",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "lint-staged": "^16.2.7"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{js,mjs,json,md}": [
+      "prettier --write"
+    ]
   },
   "private": true
 }
