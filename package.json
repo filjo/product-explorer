@@ -1,6 +1,6 @@
 {
   "name": "productexplorer",
-  "main": "expo/AppEntry",
+  "main": "index.js",
   "version": "1.0.0",
   "packageManager": "pnpm@10.17.1",
   "scripts": {

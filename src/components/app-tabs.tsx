@@ -1,33 +1,56 @@
-import { NativeTabs } from 'expo-router/unstable-native-tabs';
-import React from 'react';
-import { useColorScheme } from 'react-native';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from "react";
+import { Image, useColorScheme } from "react-native";
 
-import { Colors } from '@/constants/theme';
+import { Colors } from "@/constants/theme";
+import ExploreScreen from "@/app/explore";
+import HomeScreen from "@/app/index";
+
+type RootTabParamList = {
+  Home: undefined;
+  Explore: undefined;
+};
+
+const Tab = createBottomTabNavigator<RootTabParamList>();
+
+function TabIcon({ source, color }: { source: number; color: string }) {
+  return <Image source={source} style={{ width: 20, height: 20, tintColor: color }} />;
+}
 
 export default function AppTabs() {
   const scheme = useColorScheme();
-  const colors = Colors[scheme === 'unspecified' ? 'light' : scheme];
+  const colors = Colors[scheme === "unspecified" ? "light" : scheme];
 
   return (
-    <NativeTabs
-      backgroundColor={colors.background}
-      indicatorColor={colors.backgroundElement}
-      labelStyle={{ selected: { color: colors.text } }}>
-      <NativeTabs.Trigger name="index">
-        <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon
-          src={require('@/assets/images/tabIcons/home.png')}
-          renderingMode="template"
-        />
-      </NativeTabs.Trigger>
-
-      <NativeTabs.Trigger name="explore">
-        <NativeTabs.Trigger.Label>Explore</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon
-          src={require('@/assets/images/tabIcons/explore.png')}
-          renderingMode="template"
-        />
-      </NativeTabs.Trigger>
-    </NativeTabs>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: colors.text,
+        tabBarInactiveTintColor: colors.textSecondary,
+        tabBarStyle: {
+          backgroundColor: colors.background,
+          borderTopColor: colors.backgroundElement,
+        },
+      }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabIcon source={require("@/assets/images/tabIcons/home.png")} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Explore"
+        component={ExploreScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabIcon source={require("@/assets/images/tabIcons/explore.png")} color={color} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
   );
 }
