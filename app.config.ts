@@ -31,6 +31,7 @@ const config: ExpoConfig = {
     predictiveBackGestureEnabled: false,
   },
   plugins: [
+    "expo-localization",
     [
       "expo-splash-screen",
       {
