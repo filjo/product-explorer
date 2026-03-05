@@ -2,7 +2,8 @@
 
 /**
  * This script is used to reset the project to a blank state.
- * It deletes or moves the /src and /scripts directories to /example based on user input and creates a new /src/app directory with an index.tsx and _layout.tsx file.
+ * It deletes or moves the /src and /scripts directories to /example based on user input and creates
+ * a new /src/app directory with an index.tsx file plus an App.tsx entry file.
  * You can remove the `reset-project` script from package.json and safely delete this file after running it.
  */
 
@@ -35,11 +36,24 @@ const styles = StyleSheet.create({
 });
 `;
 
-const layoutContent = `import { Stack } from "expo-router";
+const appEntryContent = `import React from "react";
+import { Text, View, StyleSheet } from "react-native";
 
-export default function RootLayout() {
-  return <Stack />;
+export default function App() {
+  return (
+    <View style={styles.container}>
+      <Text>Edit App.tsx to update your app entry.</Text>
+    </View>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
 `;
 
 const rl = readline.createInterface({
@@ -82,18 +96,18 @@ const moveDirectories = async (userInput) => {
     await fs.promises.writeFile(indexPath, indexContent);
     console.log("📄 src/app/index.tsx created.");
 
-    // Create _layout.tsx
-    const layoutPath = path.join(newAppDirPath, "_layout.tsx");
-    await fs.promises.writeFile(layoutPath, layoutContent);
-    console.log("📄 src/app/_layout.tsx created.");
+    // Create App.tsx
+    const appEntryPath = path.join(root, "App.tsx");
+    await fs.promises.writeFile(appEntryPath, appEntryContent);
+    console.log("📄 App.tsx created.");
 
     console.log("\n✅ Project reset complete. Next steps:");
     console.log(
-      `1. Run \`npx expo start\` to start a development server.\n2. Edit src/app/index.tsx to edit the main screen.\n3. Put all your application code in /src, only screens and layout files should be in /src/app.${
+      `1. Run \`npx expo start\` to start a development server.\n2. Edit App.tsx to update the app entry.\n3. Edit src/app/index.tsx to update the first screen.${
         userInput === "y"
           ? `\n4. Delete the /${exampleDir} directory when you're done referencing it.`
           : ""
-      }`
+      }`,
     );
   } catch (error) {
     console.error(`❌ Error during script execution: ${error.message}`);
@@ -110,5 +124,5 @@ rl.question(
       console.log("❌ Invalid input. Please enter 'Y' or 'N'.");
       rl.close();
     }
-  }
+  },
 );

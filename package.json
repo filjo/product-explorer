@@ -1,6 +1,6 @@
 {
   "name": "productexplorer",
-  "main": "expo-router/entry",
+  "main": "expo/AppEntry",
   "version": "1.0.0",
   "packageManager": "pnpm@10.17.1",
   "scripts": {
@@ -22,13 +22,13 @@
     "@react-navigation/elements": "^2.8.1",
     "@react-navigation/native": "^7.1.28",
     "expo": "~55.0.5",
+    "expo-build-properties": "~55.0.9",
     "expo-constants": "~55.0.7",
     "expo-device": "~55.0.9",
     "expo-font": "~55.0.4",
     "expo-glass-effect": "~55.0.7",
     "expo-image": "~55.0.6",
     "expo-linking": "~55.0.7",
-    "expo-router": "~55.0.4",
     "expo-splash-screen": "~55.0.10",
     "expo-status-bar": "~55.0.4",
     "expo-symbols": "~55.0.5",
@@ -53,9 +53,9 @@
     "eslint-config-prettier": "^10.1.8",
     "git-cz": "^4.9.0",
     "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "prettier": "^3.6.2",
-    "typescript": "~5.9.2",
-    "lint-staged": "^16.2.7"
+    "typescript": "~5.9.2"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

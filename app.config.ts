@@ -1,17 +1,27 @@
 import type { ExpoConfig } from "expo/config";
 
+const packageName = "com.productexplorer.app";
+const version = "1.0.0";
+const buildNumber = 1;
+
+// Config
+
 const config: ExpoConfig = {
   name: "ProductExplorer",
   slug: "ProductExplorer",
-  version: "1.0.0",
+  version: version,
   orientation: "portrait",
   icon: "./assets/images/icon.png",
   scheme: "productexplorer",
   userInterfaceStyle: "automatic",
   ios: {
     icon: "./assets/expo.icon",
+    bundleIdentifier: packageName,
+    buildNumber: buildNumber.toString(),
   },
   android: {
+    versionCode: buildNumber,
+    package: packageName,
     adaptiveIcon: {
       backgroundColor: "#E6F4FE",
       foregroundImage: "./assets/images/android-icon-foreground.png",
@@ -20,12 +30,7 @@ const config: ExpoConfig = {
     },
     predictiveBackGestureEnabled: false,
   },
-  web: {
-    output: "static",
-    favicon: "./assets/images/favicon.png",
-  },
   plugins: [
-    "expo-router",
     [
       "expo-splash-screen",
       {
@@ -36,9 +41,21 @@ const config: ExpoConfig = {
         },
       },
     ],
+    [
+      "expo-build-properties",
+      {
+        android: {
+          compileSdkVersion: 35,
+          targetSdkVersion: 35,
+          buildToolsVersion: "35.0.0",
+        },
+        ios: {
+          deploymentTarget: "18.0",
+        },
+      },
+    ],
   ],
   experiments: {
-    typedRoutes: true,
     reactCompiler: true,
   },
 };
