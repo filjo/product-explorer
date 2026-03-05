@@ -4,6 +4,9 @@
 node_modules/
 .pnpm-store/
 
+# Husky
+.husky/
+
 # Expo
 .expo/
 dist/
