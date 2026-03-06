@@ -1,23 +1,73 @@
+import { FavoriteButton } from "@/components";
 import { ProductDetailsRouteParams } from "@/navigation/types";
-import { useRoute } from "@react-navigation/native";
-import React from "react";
-import { Image, ScrollView, StyleSheet, Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useFavoriteProductsStore } from "@/store";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { Image } from "expo-image";
+import React, { useLayoutEffect } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export const ProductDetailScreen = () => {
+  // Hooks
+  const navigation = useNavigation();
   const route = useRoute();
-  const { product } = route.params as ProductDetailsRouteParams["params"];
 
+  // Store
+  const favoriteProducts = useFavoriteProductsStore((state) => state.favoriteProducts);
+  const toggleFavorite = useFavoriteProductsStore((state) => state.toggleFavorite);
+
+  const { product } = route.params as ProductDetailsRouteParams["params"];
+  const productImages = product.images;
+
+  const isLiked = React.useMemo(
+    () => favoriteProducts.some((favoriteProduct) => favoriteProduct.id === product.id),
+    [favoriteProducts, product.id],
+  );
+
+  const { top } = useSafeAreaInsets();
+
+  // Methods
+  const handleFavoritePress = React.useCallback(() => {
+    toggleFavorite(product);
+  }, [product, toggleFavorite]);
+
+  const renderHeaderRight = React.useCallback(() => {
+    return <FavoriteButton isLiked={isLiked} size={24} onPress={handleFavoritePress} />;
+  }, [handleFavoritePress, isLiked]);
+
+  // Effects
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: "",
+      headerRight: renderHeaderRight,
+    });
+  }, [navigation, renderHeaderRight]);
+
+  // Render
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.content}>
-        <Image source={{ uri: product.thumbnail }} style={styles.image} />
-        <Text style={styles.title}>{product.title}</Text>
-        <Text style={styles.price}>${product.price}</Text>
-        <Text style={styles.sectionTitle}>Description</Text>
-        <Text style={styles.description}>{product.description}</Text>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <ScrollView
+          horizontal
+          pagingEnabled
+          style={{ paddingTop: top + 10 }}
+          scrollEnabled={productImages.length > 1}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.gallery}
+        >
+          {productImages.map((uri) => (
+            <Image key={uri} source={{ uri }} style={styles.image} contentFit="cover" />
+          ))}
+        </ScrollView>
+        <View style={styles.content}>
+          <Text style={styles.title}>{product.title}</Text>
+          <Text style={styles.price}>${product.price}</Text>
+          <Text style={styles.sectionTitle}>Description</Text>
+          <Text style={styles.description}>{product.description}</Text>
+        </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -25,15 +75,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  scrollContent: {
+    paddingBottom: 24,
+  },
+  gallery: {
+    width: "100%",
+    height: 400,
+  },
   content: {
     padding: 16,
     gap: 12,
   },
   image: {
     width: "100%",
-    height: 240,
-    borderRadius: 8,
-    backgroundColor: "#eee",
+    backgroundColor: "#F0F0F3",
   },
   title: {
     fontSize: 24,

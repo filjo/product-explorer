@@ -55,6 +55,7 @@ export const useFavoriteProductsStore = create<Store>()(
     }),
     {
       name: "favorite-products-store",
+      version: 1,
       storage: createJSONStorage(() => zustandStorage),
       partialize: (state) => ({
         favoriteProducts: state.favoriteProducts,

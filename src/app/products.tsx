@@ -1,10 +1,10 @@
-import { RatingView } from "@/components";
+import { FavoriteButton, RatingView } from "@/components";
 import { Product } from "@/models/Product";
 import { useProducts } from "@/queries/useProducts";
+import { useFavoriteProductsStore } from "@/store";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { useQueryClient } from "@tanstack/react-query";
 import { Image } from "expo-image";
-import { SymbolView } from "expo-symbols";
 import React from "react";
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,9 +13,10 @@ export const ProductsScreen = ({ navigation }: any) => {
   // Query
 
   const queryClient = useQueryClient();
+  const handleFavoritePress = React.useCallback(() => undefined, []);
   const [isManualRefreshing, setIsManualRefreshing] = React.useState(false);
-  const { data, isPending, hasNextPage, fetchNextPage, isFetchingNextPage, isRefetching } =
-    useProducts();
+  const { data, isPending, hasNextPage, fetchNextPage, isFetchingNextPage } = useProducts();
+
   // Render
 
   const handleRefresh = async () => {
@@ -36,6 +37,8 @@ export const ProductsScreen = ({ navigation }: any) => {
   );
 
   const renderItem: ListRenderItem<Product> = ({ item }) => {
+    // Store
+    const isFavorite = useFavoriteProductsStore.getState().isFavorite(item.id);
     return (
       <Pressable
         onPress={() => navigation.navigate("ProductDetail", { product: item })}
@@ -43,13 +46,7 @@ export const ProductsScreen = ({ navigation }: any) => {
       >
         <View style={styles.imageContainer}>
           <Image source={{ uri: item.thumbnail }} style={styles.image} contentFit="contain" />
-          <Pressable onPress={() => undefined} style={styles.heartButton} hitSlop={8}>
-            <SymbolView
-              name={{ ios: "heart", android: "favorite_border" }}
-              size={16}
-              tintColor="#7a7a7a"
-            />
-          </Pressable>
+          <FavoriteButton isLiked={isFavorite} onPress={handleFavoritePress} withBackground />
         </View>
         <View style={styles.content}>
           <Text style={styles.title} numberOfLines={2}>
@@ -101,7 +98,7 @@ export const ProductsScreen = ({ navigation }: any) => {
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.2}
         contentContainerStyle={styles.listContent}
-        refreshing={isRefetching && !isPending}
+        refreshing={isManualRefreshing}
         onRefresh={handleRefresh}
         ListFooterComponent={footerComponent}
       />
@@ -138,12 +135,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 10,
     right: 10,
-    width: 30,
-    height: 30,
-    borderRadius: 999,
-    backgroundColor: "rgba(255,255,255,0.9)",
-    justifyContent: "center",
-    alignItems: "center",
   },
   content: {
     paddingTop: 8,

@@ -13,7 +13,11 @@ export const MainNavigator = () => {
       <Stack.Screen
         name="ProductDetail"
         component={ProductDetailScreen}
-        options={{ title: "Product details" }}
+        options={{
+          title: "Product details",
+          headerTransparent: true,
+          headerBackButtonDisplayMode: "minimal",
+        }}
       />
     </Stack.Navigator>
   );

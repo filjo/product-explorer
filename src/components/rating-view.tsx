@@ -18,7 +18,7 @@ const getRatingFillWidth = (rating: number) => {
   return (clampedRating / STAR_COUNT) * STAR_ROW_WIDTH;
 };
 
-export const RatingView = ({ rating, reviewCount = 0, size = STAR_SIZE }: RatingViewProps) => {
+const RatingViewComponent = ({ rating, reviewCount = 0, size = STAR_SIZE }: RatingViewProps) => {
   return (
     <View style={styles.row}>
       <View style={styles.starsContainer}>
@@ -76,3 +76,5 @@ const styles = StyleSheet.create({
     color: "#111111",
   },
 });
+
+export const RatingView = React.memo(RatingViewComponent);
