@@ -46,7 +46,7 @@ export const ProductsScreen = ({ navigation }: any) => {
       >
         <View style={styles.imageContainer}>
           <Image source={{ uri: item.thumbnail }} style={styles.image} contentFit="contain" />
-          <FavoriteButton isLiked={isFavorite} onPress={handleFavoritePress} withBackground />
+          <FavoriteButton isLiked={isFavorite} onPress={handleFavoritePress} />
         </View>
         <View style={styles.content}>
           <Text style={styles.title} numberOfLines={2}>

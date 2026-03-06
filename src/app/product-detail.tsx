@@ -4,7 +4,7 @@ import { useFavoriteProductsStore } from "@/store";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Image } from "expo-image";
 import React, { useLayoutEffect } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export const ProductDetailScreen = () => {
@@ -32,7 +32,17 @@ export const ProductDetailScreen = () => {
   }, [product, toggleFavorite]);
 
   const renderHeaderRight = React.useCallback(() => {
-    return <FavoriteButton isLiked={isLiked} size={24} onPress={handleFavoritePress} />;
+    return (
+      <FavoriteButton
+        style={Platform.select({
+          ios: undefined,
+          android: { width: 40, height: 40, borderRadius: 20 },
+        })}
+        isLiked={isLiked}
+        size={24}
+        onPress={handleFavoritePress}
+      />
+    );
   }, [handleFavoritePress, isLiked]);
 
   // Effects

@@ -6,34 +6,21 @@ type FavoriteButtonProps = {
   isLiked: boolean;
   onPress: () => void;
   size?: number;
-  withBackground?: boolean;
   style?: StyleProp<ViewStyle>;
 };
 
-const FavoriteButtonComponent = ({
-  isLiked,
-  onPress,
-  size = 20,
-  withBackground = false,
-  style,
-}: FavoriteButtonProps) => {
+const FavoriteButtonComponent = ({ isLiked, onPress, size = 20, style }: FavoriteButtonProps) => {
+  const name = isLiked ? "favorite" : "favorite-border";
+  const color = isLiked ? "black" : "#7a7a7a";
   return (
-    <Pressable
-      onPress={onPress}
-      hitSlop={8}
-      style={[withBackground ? styles.withBackground : undefined, style]}
-    >
-      <MaterialIcons
-        name={isLiked ? "favorite" : "favorite-border"}
-        size={size}
-        color={isLiked ? "black" : "#7a7a7a"}
-      />
+    <Pressable onPress={onPress} hitSlop={15} style={[styles.pressable, style]}>
+      <MaterialIcons name={name} size={size} color={color} />
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
-  withBackground: {
+  pressable: {
     width: 30,
     height: 30,
     borderRadius: 15,
