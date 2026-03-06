@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "packageManager": "pnpm@10.17.1",
   "scripts": {
-    "start": "expo start",
+    "start": "expo start --clear",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "prebuild": "expo prebuild --clean",
@@ -20,9 +20,10 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@react-navigation/bottom-tabs": "8.0.0-alpha.15",
-    "@react-navigation/elements": "3.0.0-alpha.14",
-    "@react-navigation/native": "8.0.0-alpha.13",
+    "@react-navigation/bottom-tabs": "8.0.0-alpha.16",
+    "@react-navigation/elements": "3.0.0-alpha.15",
+    "@react-navigation/native": "8.0.0-alpha.14",
+    "@react-navigation/native-stack": "8.0.0-alpha.16",
     "@shopify/flash-list": "2.0.2",
     "@tanstack/react-query": "^5.90.21",
     "axios": "^1.13.6",
