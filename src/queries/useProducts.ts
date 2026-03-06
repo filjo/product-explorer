@@ -6,12 +6,13 @@ import { Product } from "@/models";
 
 const PRODUCTS_PAGE_SIZE = 30;
 
-export const useProducts = () => {
+export const useProducts = ({ enabled = true }: { enabled?: boolean } = {}) => {
   return useInfiniteQuery<ProductsResponse, Error, Product[], ["products"], number>({
     queryKey: ["products"],
     queryFn: ({ pageParam }) =>
       productApi.getProducts({ limit: PRODUCTS_PAGE_SIZE, skip: pageParam }),
     initialPageParam: 0,
+    enabled,
     getNextPageParam: (lastPage) => {
       const nextSkip = lastPage.skip + lastPage.limit;
 

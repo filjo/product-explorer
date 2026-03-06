@@ -1,12 +1,12 @@
 import { FavoriteButton, RatingView } from "@/components";
 import { Product } from "@/models/Product";
-import { useProducts } from "@/queries/useProducts";
+import { useProductCategories, useProducts, useProductsByCategory } from "@/queries";
 import { useFavoriteProductsStore } from "@/store";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { useQueryClient } from "@tanstack/react-query";
 import { Image } from "expo-image";
 import React from "react";
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export const ProductsScreen = ({ navigation }: any) => {
@@ -15,14 +15,36 @@ export const ProductsScreen = ({ navigation }: any) => {
   const queryClient = useQueryClient();
   const handleFavoritePress = React.useCallback(() => undefined, []);
   const [isManualRefreshing, setIsManualRefreshing] = React.useState(false);
-  const { data, isPending, hasNextPage, fetchNextPage, isFetchingNextPage } = useProducts();
+  const [selectedCategory, setSelectedCategory] = React.useState<string | null>(null);
+  const isCategorySelected = Boolean(selectedCategory);
+
+  const { data: categories = [] } = useProductCategories();
+  const productsQuery = useProducts({ enabled: !isCategorySelected });
+  const productsByCategoryQuery = useProductsByCategory(selectedCategory, {
+    enabled: isCategorySelected,
+  });
+
+  const data = isCategorySelected ? productsByCategoryQuery.data : productsQuery.data;
+  const isPending = isCategorySelected
+    ? productsByCategoryQuery.isPending
+    : productsQuery.isPending;
+  const hasNextPage = isCategorySelected
+    ? productsByCategoryQuery.hasNextPage
+    : productsQuery.hasNextPage;
+  const isFetchingNextPage = isCategorySelected
+    ? productsByCategoryQuery.isFetchingNextPage
+    : productsQuery.isFetchingNextPage;
 
   // Render
 
   const handleRefresh = async () => {
     setIsManualRefreshing(true);
     try {
-      await queryClient.resetQueries({ queryKey: ["products"] });
+      await Promise.all([
+        queryClient.resetQueries({ queryKey: ["products"] }),
+        queryClient.resetQueries({ queryKey: ["products-by-category"] }),
+        queryClient.resetQueries({ queryKey: ["product-categories"] }),
+      ]);
     } finally {
       setIsManualRefreshing(false);
     }
@@ -77,7 +99,12 @@ export const ProductsScreen = ({ navigation }: any) => {
       return;
     }
 
-    fetchNextPage();
+    if (isCategorySelected) {
+      productsByCategoryQuery.fetchNextPage();
+      return;
+    }
+
+    productsQuery.fetchNextPage();
   };
 
   if (isPending && !isManualRefreshing) {
@@ -90,6 +117,43 @@ export const ProductsScreen = ({ navigation }: any) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <View style={styles.filtersContainer}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.filters}
+        >
+          <Pressable
+            onPress={() => setSelectedCategory(null)}
+            style={[styles.filterTag, !selectedCategory ? styles.filterTagActive : undefined]}
+          >
+            <Text
+              style={[
+                styles.filterTagText,
+                !selectedCategory ? styles.filterTagTextActive : undefined,
+              ]}
+            >
+              All
+            </Text>
+          </Pressable>
+          {categories.map((category) => {
+            const isActive = selectedCategory === category.slug;
+            return (
+              <Pressable
+                key={category.slug}
+                onPress={() => setSelectedCategory(category.slug)}
+                style={[styles.filterTag, isActive ? styles.filterTagActive : undefined]}
+              >
+                <Text
+                  style={[styles.filterTagText, isActive ? styles.filterTagTextActive : undefined]}
+                >
+                  {category.name}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </ScrollView>
+      </View>
       <FlashList<Product>
         data={data ?? []}
         renderItem={renderItem}
@@ -115,6 +179,35 @@ const styles = StyleSheet.create({
   listContent: {
     backgroundColor: "white",
     paddingHorizontal: 10,
+  },
+  filtersContainer: {
+    paddingTop: 8,
+    paddingBottom: 6,
+  },
+  filters: {
+    paddingHorizontal: 10,
+    gap: 8,
+  },
+  filterTag: {
+    borderWidth: 1,
+    borderColor: "#d9d9d9",
+    borderRadius: 16,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    backgroundColor: "#ffffff",
+  },
+  filterTagActive: {
+    backgroundColor: "#111111",
+    borderColor: "#111111",
+  },
+  filterTagText: {
+    fontSize: 13,
+    fontWeight: "500",
+    color: "#333333",
+    textTransform: "capitalize",
+  },
+  filterTagTextActive: {
+    color: "#ffffff",
   },
   card: {
     flex: 1,

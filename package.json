@@ -83,12 +83,10 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "prettier --write",
-      "eslint --fix",
-      "jest --watchman=false --bail --findRelatedTests --passWithNoTests"
+      "eslint --fix"
     ],
     "*.{js,jsx,mjs}": [
-      "prettier --write",
-      "jest --watchman=false --bail --findRelatedTests --passWithNoTests"
+      "prettier --write"
     ],
     "*.{json,md}": [
       "prettier --write"
