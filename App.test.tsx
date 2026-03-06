@@ -1,5 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { FavoritesScreen, ProductsScreen } from "@/app";
 import { useProducts } from "@/queries/useProducts";
@@ -9,6 +10,11 @@ jest.mock("@/queries/useProducts", () => ({
 }));
 
 const mockedUseProducts = useProducts as jest.MockedFunction<typeof useProducts>;
+
+const renderWithQueryClient = (ui: React.ReactElement) => {
+  const queryClient = new QueryClient();
+  return render(<QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>);
+};
 
 describe("screens", () => {
   beforeEach(() => {
@@ -48,13 +54,16 @@ describe("screens", () => {
           thumbnail: "https://example.com/thumb.png",
         },
       ],
-      isLoading: false,
+      isPending: false,
       hasNextPage: false,
       fetchNextPage: jest.fn(),
       isFetchingNextPage: false,
+      isRefetching: false,
     } as unknown as ReturnType<typeof useProducts>);
 
-    const { getByText } = render(<ProductsScreen navigation={{ navigate: jest.fn() }} />);
+    const { getByText } = renderWithQueryClient(
+      <ProductsScreen navigation={{ navigate: jest.fn() }} />,
+    );
 
     expect(getByText("Phone")).toBeTruthy();
   });

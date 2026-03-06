@@ -9,6 +9,7 @@ const STAR_ROW_WIDTH = STAR_COUNT * STAR_SIZE + (STAR_COUNT - 1) * STAR_GAP;
 
 type RatingViewProps = {
   rating: number;
+  reviewCount?: number;
   size?: number;
 };
 
@@ -17,7 +18,7 @@ const getRatingFillWidth = (rating: number) => {
   return (clampedRating / STAR_COUNT) * STAR_ROW_WIDTH;
 };
 
-export const RatingView = ({ rating, size = STAR_SIZE }: RatingViewProps) => {
+export const RatingView = ({ rating, reviewCount = 0, size = STAR_SIZE }: RatingViewProps) => {
   return (
     <View style={styles.row}>
       <View style={styles.starsContainer}>
@@ -41,6 +42,7 @@ export const RatingView = ({ rating, size = STAR_SIZE }: RatingViewProps) => {
         </View>
       </View>
       <Text style={styles.ratingText}>{rating.toFixed(1)}</Text>
+      {reviewCount > 0 ? <Text style={styles.ratingText}>({reviewCount})</Text> : null}
     </View>
   );
 };
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
   },
   ratingText: {
     fontSize: 13,
-    fontWeight: "600",
+    fontWeight: "bold",
     color: "#111111",
   },
 });

@@ -2,6 +2,7 @@ import { RatingView } from "@/components";
 import { Product } from "@/models/Product";
 import { useProducts } from "@/queries/useProducts";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
+import { useQueryClient } from "@tanstack/react-query";
 import { Image } from "expo-image";
 import { SymbolView } from "expo-symbols";
 import React from "react";
@@ -11,8 +12,28 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export const ProductsScreen = ({ navigation }: any) => {
   // Query
 
-  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useProducts();
+  const queryClient = useQueryClient();
+  const [isManualRefreshing, setIsManualRefreshing] = React.useState(false);
+  const { data, isPending, hasNextPage, fetchNextPage, isFetchingNextPage, isRefetching } =
+    useProducts();
   // Render
+
+  const handleRefresh = async () => {
+    setIsManualRefreshing(true);
+    try {
+      await queryClient.resetQueries({ queryKey: ["products"] });
+    } finally {
+      setIsManualRefreshing(false);
+    }
+  };
+
+  const footerComponent = isFetchingNextPage ? (
+    <View style={{ paddingVertical: 16 }}>
+      <ActivityIndicator />
+    </View>
+  ) : (
+    <View style={{ height: 100 }} />
+  );
 
   const renderItem: ListRenderItem<Product> = ({ item }) => {
     return (
@@ -24,7 +45,7 @@ export const ProductsScreen = ({ navigation }: any) => {
           <Image source={{ uri: item.thumbnail }} style={styles.image} contentFit="contain" />
           <Pressable onPress={() => undefined} style={styles.heartButton} hitSlop={8}>
             <SymbolView
-              name={{ ios: "heart", android: "favorite_border", web: "favorite_border" }}
+              name={{ ios: "heart", android: "favorite_border" }}
               size={16}
               tintColor="#7a7a7a"
             />
@@ -34,7 +55,7 @@ export const ProductsScreen = ({ navigation }: any) => {
           <Text style={styles.title} numberOfLines={2}>
             {item.title}
           </Text>
-          <RatingView rating={item.rating} />
+          <RatingView rating={item.rating} reviewCount={item.reviews.length} />
 
           {item.discountPercentage > 0 ? (
             <View style={styles.discountBlock}>
@@ -62,14 +83,16 @@ export const ProductsScreen = ({ navigation }: any) => {
     fetchNextPage();
   };
 
+  if (isPending && !isManualRefreshing) {
+    return (
+      <SafeAreaView style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size={"large"} color="red" />
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      {isLoading ? (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <ActivityIndicator />
-        </View>
-      ) : null}
-
       <FlashList<Product>
         data={data ?? []}
         renderItem={renderItem}
@@ -78,15 +101,9 @@ export const ProductsScreen = ({ navigation }: any) => {
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.2}
         contentContainerStyle={styles.listContent}
-        ListFooterComponent={
-          isFetchingNextPage ? (
-            <View style={{ paddingVertical: 16 }}>
-              <ActivityIndicator />
-            </View>
-          ) : (
-            <View style={{ height: 100 }} />
-          )
-        }
+        refreshing={isRefetching && !isPending}
+        onRefresh={handleRefresh}
+        ListFooterComponent={footerComponent}
       />
     </SafeAreaView>
   );
