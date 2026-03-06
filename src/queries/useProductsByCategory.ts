@@ -6,29 +6,22 @@ import { Product } from "@/models";
 
 const PRODUCTS_PAGE_SIZE = 30;
 
-export const useProductsByCategory = (category?: string) => {
+export const useProductsByCategory = (category: string | null) => {
   return useInfiniteQuery<
     ProductsResponse,
     Error,
     Product[],
-    ["products", "by", "category", string | undefined],
+    ["products", "by", "category", string | null],
     number
   >({
     queryKey: ["products", "by", "category", category],
-    queryFn: ({ pageParam, queryKey }) => {
-      const [, selectedCategory] = queryKey;
-
-      if (!selectedCategory) {
-        return Promise.resolve({
-          products: [],
-          total: 0,
-          skip: 0,
-          limit: PRODUCTS_PAGE_SIZE,
-        });
+    queryFn: ({ pageParam }) => {
+      if (!category) {
+        throw new Error("Category is required");
       }
 
       return productApi.getProductsByCategory({
-        category: selectedCategory,
+        category,
         limit: PRODUCTS_PAGE_SIZE,
         skip: pageParam,
       });

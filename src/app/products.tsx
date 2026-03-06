@@ -20,9 +20,7 @@ export const ProductsScreen = ({ navigation }: any) => {
 
   const { data: categories = [] } = useProductCategories();
   const productsQuery = useProducts({ enabled: !isCategorySelected });
-  const productsByCategoryQuery = useProductsByCategory(selectedCategory, {
-    enabled: isCategorySelected,
-  });
+  const productsByCategoryQuery = useProductsByCategory(selectedCategory);
 
   const data = isCategorySelected ? productsByCategoryQuery.data : productsQuery.data;
   const isPending = isCategorySelected
