@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 
 import { ProductDetailScreen } from "@/app/product-detail";
-import { TabNavigator } from "@/navigation";
+import { TabNavigator } from "./TabNavigator";
 
 const Stack = createNativeStackNavigator();
 
