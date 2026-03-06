@@ -3,25 +3,27 @@ import { useProducts } from "@/queries/useProducts";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { Image } from "expo-image";
 import React from "react";
-import { ActivityIndicator, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function ProductsScreen() {
+export const ProductsScreen = ({ navigation }: any) => {
   // Query
 
   const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useProducts();
-
   // Render
 
   const renderItem: ListRenderItem<Product> = ({ item }) => {
     return (
-      <View style={{ flex: 1, flexDirection: "row", gap: 10 }}>
+      <Pressable
+        onPress={() => navigation.navigate("ProductDetail", { product: item })}
+        style={{ flex: 1, flexDirection: "row", gap: 10 }}
+      >
         <Image source={{ uri: item.thumbnail }} style={{ width: 100, height: 100 }} />
         <View>
           <Text>{item.title}</Text>
           <Text>{item.price}</Text>
         </View>
-      </View>
+      </Pressable>
     );
   };
 
@@ -59,4 +61,4 @@ export default function ProductsScreen() {
       />
     </SafeAreaView>
   );
-}
+};

@@ -1,8 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
 
-import FavoritesScreen from "@/app/explore";
-import ProductsScreen from "@/app/index";
+import { FavoritesScreen, ProductsScreen } from "@/app";
 import { useProducts } from "@/queries/useProducts";
 
 jest.mock("@/queries/useProducts", () => ({
@@ -53,9 +52,9 @@ describe("screens", () => {
       hasNextPage: false,
       fetchNextPage: jest.fn(),
       isFetchingNextPage: false,
-    } as ReturnType<typeof useProducts>);
+    } as unknown as ReturnType<typeof useProducts>);
 
-    const { getByText } = render(<ProductsScreen />);
+    const { getByText } = render(<ProductsScreen navigation={{ navigate: jest.fn() }} />);
 
     expect(getByText("Phone")).toBeTruthy();
   });

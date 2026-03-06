@@ -5,7 +5,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useProducts } from "@/queries";
 
-export default function DebugScreen() {
+export const DebugScreen = () => {
   const { data, isLoading, isFetching, error, refetch } = useProducts();
   const firstProduct = data?.[0];
 
@@ -30,7 +30,7 @@ export default function DebugScreen() {
       </ScrollView>
     </ThemedView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

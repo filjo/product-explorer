@@ -1,19 +1,11 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 
-import DebugScreen from "@/app/debug";
-import FavoritesScreen from "@/app/explore";
-import ProductsScreen from "@/app/index";
+import { DebugScreen, FavoritesScreen, ProductsScreen } from "@/app";
 
-type RootTabParamList = {
-  Products: undefined;
-  Favorites: undefined;
-  Debug: undefined;
-};
+const Tab = createBottomTabNavigator();
 
-const Tab = createBottomTabNavigator<RootTabParamList>();
-
-export default function AppTabs() {
+export const TabNavigator = () => {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="Products" component={ProductsScreen} />
@@ -21,4 +13,4 @@ export default function AppTabs() {
       <Tab.Screen name="Debug" component={DebugScreen} />
     </Tab.Navigator>
   );
-}
+};
