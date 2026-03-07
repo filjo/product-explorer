@@ -2,21 +2,21 @@ import React from "react";
 import { StyleProp, TouchableOpacity, ViewStyle } from "react-native";
 
 import { makeStyles } from "@/utils";
-import { Text } from "./text";
+import { Text } from "../text";
 
-type SecondaryButtonProps = {
+type PrimaryButtonProps = {
   title: string;
   onPress: () => void;
   disabled?: boolean;
   style?: StyleProp<ViewStyle>;
 };
 
-const SecondaryButtonComponent = ({
+const PrimaryButtonComponent = ({
   title,
   onPress,
   disabled = false,
   style,
-}: SecondaryButtonProps) => {
+}: PrimaryButtonProps) => {
   const styles = useStyles();
 
   return (
@@ -25,7 +25,9 @@ const SecondaryButtonComponent = ({
       disabled={disabled}
       style={[styles.button, disabled ? styles.buttonDisabled : undefined, style]}
     >
-      <Text style={styles.title}>{title}</Text>
+      <Text color="background" style={styles.title}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -36,13 +38,11 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 999,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "transparent",
-    borderWidth: 1,
-    borderColor: theme.colors.backgroundSelected,
+    backgroundColor: theme.colors.brand,
     paddingHorizontal: theme.spacing.s5,
   },
   buttonPressed: {
-    opacity: 0.75,
+    opacity: 0.9,
   },
   buttonDisabled: {
     opacity: 0.5,
@@ -52,4 +52,4 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SecondaryButton = React.memo(SecondaryButtonComponent);
+export const PrimaryButton = React.memo(PrimaryButtonComponent);

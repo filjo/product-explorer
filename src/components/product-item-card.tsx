@@ -1,12 +1,11 @@
 import { Image } from "expo-image";
 import React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 import { Product } from "../models/Product";
-import { makeStyles } from "../utils/make-styles";
-import { formatDiscountedPrice, formatPriceWithCurrency } from "../utils/price";
+import { formatDiscountedPrice, formatPriceWithCurrency, makeStyles } from "../utils";
 
-import { FavoriteButton } from "./favorite-button";
+import { FavoriteButton } from "./buttons/favorite-button";
 import { RatingView } from "./rating-view";
 import { Text } from "./text";
 
@@ -20,7 +19,7 @@ export const ProductItemCard = ({ item, isFavorite, onPress }: ProductItemCardPr
   const styles = useStyles();
 
   return (
-    <TouchableOpacity onPress={() => onPress(item)} style={styles.card}>
+    <Pressable onPress={() => onPress(item)} style={styles.card}>
       <View style={styles.imageContainer}>
         <Image source={{ uri: item.thumbnail }} style={styles.image} contentFit="contain" />
         <FavoriteButton type="card" disabled={true} isLiked={isFavorite} />
@@ -41,7 +40,7 @@ export const ProductItemCard = ({ item, isFavorite, onPress }: ProductItemCardPr
               <Text variant="footnote" color="textSecondary" style={styles.originalPrice}>
                 {formatPriceWithCurrency(item.price)}
               </Text>
-              <Text variant="footnote" color={"success"}>
+              <Text variant="footnote" style={styles.discountTag}>
                 -{Math.round(item.discountPercentage)}%
               </Text>
             </View>
@@ -52,7 +51,7 @@ export const ProductItemCard = ({ item, isFavorite, onPress }: ProductItemCardPr
           </Text>
         )}
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
@@ -93,5 +92,9 @@ const useStyles = makeStyles((theme) => ({
   },
   originalPrice: {
     textDecorationLine: "line-through",
+  },
+  discountTag: {
+    color: "#0a8f45",
+    fontWeight: "700",
   },
 }));
