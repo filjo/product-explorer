@@ -1,14 +1,15 @@
-import { FavoriteButton } from "@/components";
+import { FavoriteButton, ProductImagesCarousel, RootView, Text } from "@/components";
 import { ProductDetailsRouteParams } from "@/navigation/types";
 import { useFavoriteProductsStore } from "@/store";
+import { formatPriceWithCurrency, makeStyles } from "@/utils";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Image } from "expo-image";
 import React, { useLayoutEffect } from "react";
-import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Platform, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export const ProductDetailScreen = () => {
   // Hooks
+  const styles = useStyles();
   const navigation = useNavigation();
   const route = useRoute();
 
@@ -56,65 +57,47 @@ export const ProductDetailScreen = () => {
 
   // Render
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <ScrollView
-          horizontal
-          pagingEnabled
-          style={{ paddingTop: top + 10 }}
-          scrollEnabled={productImages.length > 1}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.gallery}
-        >
-          {productImages.map((uri) => (
-            <Image key={uri} source={{ uri }} style={styles.image} contentFit="cover" />
-          ))}
-        </ScrollView>
-        <View style={styles.content}>
-          <Text style={styles.title}>{product.title}</Text>
-          <Text style={styles.price}>${product.price}</Text>
-          <Text style={styles.sectionTitle}>Description</Text>
-          <Text style={styles.description}>{product.description}</Text>
+    <RootView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <ProductImagesCarousel images={productImages} />
+        <View style={styles.mainContent}>
+          <Text variant="title3">{product.title}</Text>
+          <Text variant="body" color="text">
+            {formatPriceWithCurrency(product.price)}
+          </Text>
+          <Text variant="subhead" color="textSecondary">
+            Description
+          </Text>
+          <Text variant="body" color="textSecondary">
+            {product.description}
+          </Text>
         </View>
       </ScrollView>
-    </View>
+    </RootView>
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   container: {
-    flex: 1,
+    backgroundColor: theme.colors.backgroundElement,
   },
-  scrollContent: {
-    paddingBottom: 24,
+  scrollView: {
+    paddingTop: theme.spacing.s4,
   },
-  gallery: {
+  imageScrollViewContent: {
+    paddingTop: theme.spacing.s4,
     width: "100%",
     height: 400,
+  },
+  mainContent: {
+    backgroundColor: theme.colors.background,
+    padding: theme.spacing.s4,
+  },
+  image: {
+    width: "100%",
   },
   content: {
     padding: 16,
     gap: 12,
   },
-  image: {
-    width: "100%",
-    backgroundColor: "#F0F0F3",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "600",
-  },
-  price: {
-    fontSize: 20,
-    fontWeight: "500",
-  },
-  sectionTitle: {
-    marginTop: 4,
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  description: {
-    fontSize: 14,
-    lineHeight: 20,
-  },
-});
+}));
