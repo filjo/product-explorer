@@ -1,4 +1,4 @@
-import { RootView, Text } from "@/components";
+import { PrimaryButton, RootView, SecondaryButton, Text } from "@/components";
 import { ProductCategory } from "@/models";
 import { useProductCategoriesStore } from "@/store";
 import { makeStyles } from "@/utils";
@@ -85,17 +85,8 @@ export const ProductCategoriesScreen = () => {
         contentContainerStyle={styles.listContent}
       />
       <View style={styles.footer}>
-        <Pressable style={styles.applyButton} onPress={onApplyPress}>
-          <Text color="background" style={styles.applyText}>
-            Apply
-          </Text>
-        </Pressable>
-
-        <Pressable style={styles.resetButton} onPress={onResetPress}>
-          <Text color="text" style={styles.applyText}>
-            Reset
-          </Text>
-        </Pressable>
+        <PrimaryButton title="Apply" onPress={onApplyPress} />
+        <SecondaryButton title="Reset" onPress={onResetPress} />
       </View>
     </RootView>
   );
@@ -139,24 +130,10 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
   },
   footer: {
+    borderTopWidth: 2,
+    borderTopColor: theme.colors.backgroundElement,
     paddingHorizontal: theme.spacing.s5,
-    paddingBottom: theme.spacing.s4,
+    paddingVertical: theme.spacing.s4,
     gap: theme.spacing.s3,
-  },
-  applyButton: {
-    backgroundColor: "#2f8897",
-    borderRadius: 10,
-    minHeight: 50,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  resetButton: {
-    borderRadius: 10,
-    minHeight: 50,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  applyText: {
-    fontWeight: "600",
   },
 }));
