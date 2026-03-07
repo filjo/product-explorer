@@ -1,19 +1,18 @@
-import { FavoriteButton, RatingView } from "@/components";
+import { ProductItemCard, RootView } from "@/components";
 import { Product } from "@/models/Product";
 import { useProductCategories, useProducts, useProductsByCategory } from "@/queries";
 import { useFavoriteProductsStore } from "@/store";
+import { makeStyles } from "@/utils";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { useQueryClient } from "@tanstack/react-query";
-import { Image } from "expo-image";
 import React from "react";
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ActivityIndicator, Pressable, ScrollView, Text, View } from "react-native";
 
 export const ProductsScreen = ({ navigation }: any) => {
+  const styles = useStyles();
   // Query
 
   const queryClient = useQueryClient();
-  const handleFavoritePress = React.useCallback(() => undefined, []);
   const [isManualRefreshing, setIsManualRefreshing] = React.useState(false);
   const [selectedCategory, setSelectedCategory] = React.useState<string | null>(null);
   const isCategorySelected = Boolean(selectedCategory);
@@ -41,7 +40,6 @@ export const ProductsScreen = ({ navigation }: any) => {
       await Promise.all([
         queryClient.resetQueries({ queryKey: ["products"] }),
         queryClient.resetQueries({ queryKey: ["products-by-category"] }),
-        queryClient.resetQueries({ queryKey: ["product-categories"] }),
       ]);
     } finally {
       setIsManualRefreshing(false);
@@ -57,38 +55,13 @@ export const ProductsScreen = ({ navigation }: any) => {
   );
 
   const renderItem: ListRenderItem<Product> = ({ item }) => {
-    // Store
     const isFavorite = useFavoriteProductsStore.getState().isFavorite(item.id);
     return (
-      <Pressable
-        onPress={() => navigation.navigate("ProductDetail", { product: item })}
-        style={styles.card}
-      >
-        <View style={styles.imageContainer}>
-          <Image source={{ uri: item.thumbnail }} style={styles.image} contentFit="contain" />
-          <FavoriteButton isLiked={isFavorite} onPress={handleFavoritePress} />
-        </View>
-        <View style={styles.content}>
-          <Text style={styles.title} numberOfLines={2}>
-            {item.title}
-          </Text>
-          <RatingView rating={item.rating} reviewCount={item.reviews.length} />
-
-          {item.discountPercentage > 0 ? (
-            <View style={styles.discountBlock}>
-              <Text style={styles.price}>
-                US${getDiscountedPrice(item.price, item.discountPercentage)}
-              </Text>
-              <View style={styles.discountMetaRow}>
-                <Text style={styles.originalPrice}>US${item.price.toFixed(2)}</Text>
-                <Text style={styles.discountTag}>-{Math.round(item.discountPercentage)}%</Text>
-              </View>
-            </View>
-          ) : (
-            <Text style={styles.price}>US${item.price.toFixed(2)}</Text>
-          )}
-        </View>
-      </Pressable>
+      <ProductItemCard
+        item={item}
+        isFavorite={isFavorite}
+        onPress={(product) => navigation.navigate("ProductDetail", { product })}
+      />
     );
   };
 
@@ -107,14 +80,14 @@ export const ProductsScreen = ({ navigation }: any) => {
 
   if (isPending && !isManualRefreshing) {
     return (
-      <SafeAreaView style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <RootView style={{ justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size={"large"} color="red" />
-      </SafeAreaView>
+      </RootView>
     );
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+    <RootView>
       <View style={styles.filtersContainer}>
         <ScrollView
           horizontal
@@ -164,18 +137,15 @@ export const ProductsScreen = ({ navigation }: any) => {
         onRefresh={handleRefresh}
         ListFooterComponent={footerComponent}
       />
-    </SafeAreaView>
+    </RootView>
   );
 };
 
-const getDiscountedPrice = (price: number, discountPercentage: number) => {
-  const discountedPrice = price - (price * discountPercentage) / 100;
-  return discountedPrice.toFixed(2);
-};
+// Styles
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   listContent: {
-    backgroundColor: "white",
+    backgroundColor: theme.colors.background,
     paddingHorizontal: 10,
   },
   filtersContainer: {
@@ -183,7 +153,6 @@ const styles = StyleSheet.create({
     paddingBottom: 6,
   },
   filters: {
-    paddingHorizontal: 10,
     gap: 8,
   },
   filterTag: {
@@ -207,56 +176,4 @@ const styles = StyleSheet.create({
   filterTagTextActive: {
     color: "#ffffff",
   },
-  card: {
-    flex: 1,
-    margin: 6,
-  },
-  imageContainer: {
-    width: "100%",
-    aspectRatio: 1,
-    borderRadius: 12,
-    backgroundColor: "#F0F0F3",
-    overflow: "hidden",
-    padding: 12,
-  },
-  image: {
-    flex: 1,
-  },
-  heartButton: {
-    position: "absolute",
-    top: 10,
-    right: 10,
-  },
-  content: {
-    paddingTop: 8,
-    gap: 2,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: "500",
-  },
-  discountBlock: {
-    marginTop: 2,
-    gap: 1,
-  },
-  discountMetaRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-  },
-  price: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#111111",
-  },
-  originalPrice: {
-    fontSize: 13,
-    color: "#8a8a8a",
-    textDecorationLine: "line-through",
-  },
-  discountTag: {
-    fontSize: 13,
-    fontWeight: "700",
-    color: "#0a8f45",
-  },
-});
+}));

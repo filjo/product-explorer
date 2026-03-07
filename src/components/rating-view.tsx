@@ -1,6 +1,7 @@
+import { makeStyles } from "@/utils";
 import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
 const STAR_COUNT = 5;
 const STAR_SIZE = 12;
@@ -19,6 +20,8 @@ const getRatingFillWidth = (rating: number) => {
 };
 
 const RatingViewComponent = ({ rating, reviewCount = 0, size = STAR_SIZE }: RatingViewProps) => {
+  const styles = useStyles();
+
   return (
     <View style={styles.row}>
       <View style={styles.starsContainer}>
@@ -47,12 +50,12 @@ const RatingViewComponent = ({ rating, reviewCount = 0, size = STAR_SIZE }: Rati
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   row: {
-    marginTop: 2,
+    marginTop: theme.spacing.s2,
     flexDirection: "row",
     alignItems: "center",
-    gap: 4,
+    gap: theme.spacing.s1,
   },
   starsContainer: {
     width: STAR_ROW_WIDTH,
@@ -73,8 +76,8 @@ const styles = StyleSheet.create({
   ratingText: {
     fontSize: 13,
     fontWeight: "bold",
-    color: "#111111",
+    color: theme.colors.text,
   },
-});
+}));
 
 export const RatingView = React.memo(RatingViewComponent);

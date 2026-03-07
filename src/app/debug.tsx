@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, ScrollView, StyleSheet } from "react-native";
 
-import { ThemedText } from "@/components/themed-text";
+import { Text } from "@/components/text";
 import { ThemedView } from "@/components/themed-view";
 import { useProducts } from "@/queries";
 
@@ -11,22 +11,24 @@ export const DebugScreen = () => {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="subtitle">Debug Query</ThemedText>
+      <Text variant="title1">Debug Query</Text>
       <Button title={isFetching ? "Reloading..." : "Reload Query"} onPress={() => refetch()} />
 
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
-        {isLoading && <ThemedText>Loading products...</ThemedText>}
+        {isLoading && <Text>Loading products...</Text>}
 
-        {error instanceof Error && <ThemedText>Error: {error.message}</ThemedText>}
+        {error instanceof Error && <Text>Error: {error.message}</Text>}
 
         {!isLoading && !error && firstProduct && (
           <>
-            <ThemedText type="smallBold">First Product</ThemedText>
-            <ThemedText type="code">{JSON.stringify(firstProduct, null, 2)}</ThemedText>
+            <Text variant="footnote" style={styles.labelStrong}>
+              First Product
+            </Text>
+            <Text variant="code">{JSON.stringify(firstProduct, null, 2)}</Text>
           </>
         )}
 
-        {!isLoading && !error && !firstProduct && <ThemedText>No products found.</ThemedText>}
+        {!isLoading && !error && !firstProduct && <Text>No products found.</Text>}
       </ScrollView>
     </ThemedView>
   );
@@ -37,5 +39,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     gap: 12,
+  },
+  labelStrong: {
+    fontWeight: "700",
   },
 });

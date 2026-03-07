@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import { useColorScheme } from "react-native";
 
+import { ThemeProvider } from "@/contexts/theme-context";
 import { MainNavigator } from "@/navigation";
 
 export default function App() {
@@ -13,9 +14,11 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <NavigationContainer theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <MainNavigator />
-      </NavigationContainer>
+      <ThemeProvider>
+        <NavigationContainer theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+          <MainNavigator />
+        </NavigationContainer>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
