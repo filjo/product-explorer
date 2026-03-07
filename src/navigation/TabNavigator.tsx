@@ -3,10 +3,12 @@ import React from "react";
 
 import { DebugScreen, FavoritesScreen, ProductsScreen } from "@/app";
 import { FilterProductsButton } from "@/components";
+import { useRouter } from "@/hooks";
+import { RootTabParamList } from "@/navigation/types";
 import { useProductCategoriesStore } from "@/store";
 import { Platform } from "react-native";
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<RootTabParamList>();
 
 const HomeIcon: BottomTabIcon | undefined = Platform.select({
   ios: {
@@ -41,6 +43,16 @@ const DebugIcon: BottomTabIcon | undefined = Platform.select({
   },
 });
 
+const FilterProductsHeaderButton = ({ isFilterActive }: { isFilterActive: boolean }) => {
+  const { navigate } = useRouter();
+
+  const handlePress = React.useCallback(() => {
+    navigate("ProductCategories");
+  }, [navigate]);
+
+  return <FilterProductsButton isFilterActive={isFilterActive} onPress={handlePress} />;
+};
+
 export const TabNavigator = () => {
   const selectedCategory = useProductCategoriesStore((state) => state.selectedCategorySlug);
   const isFilterActive = Boolean(selectedCategory);
@@ -50,18 +62,13 @@ export const TabNavigator = () => {
       <Tab.Screen
         name="Products"
         component={ProductsScreen}
-        options={({ navigation }) => ({
+        options={() => ({
           title: "Products",
           headerTitleAlign: "left",
           headerShown: true,
           tabBarIcon: HomeIcon,
           headerShadowVisible: false,
-          headerRight: () => (
-            <FilterProductsButton
-              isFilterActive={isFilterActive}
-              onPress={() => (navigation.getParent() as any)?.navigate("ProductCategories")}
-            />
-          ),
+          headerRight: () => <FilterProductsHeaderButton isFilterActive={isFilterActive} />,
         })}
       />
       <Tab.Screen

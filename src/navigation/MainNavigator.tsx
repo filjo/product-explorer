@@ -3,10 +3,11 @@ import React from "react";
 
 import { ProductCategoriesScreen } from "@/app/product-categories";
 import { ProductDetailScreen } from "@/app/product-detail";
+import { RootStackParamList } from "@/navigation/types";
 import { useProductCategories } from "@/queries";
 import { TabNavigator } from "./TabNavigator";
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const MainNavigator = () => {
   // Queries

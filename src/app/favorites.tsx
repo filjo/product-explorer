@@ -1,4 +1,5 @@
 import { EmptyListView, ProductItemCard, RootView, Text } from "@/components";
+import { useRouter } from "@/hooks";
 import { Product } from "@/models";
 import { useFavoriteProductsStore } from "@/store";
 import { makeStyles } from "@/utils";
@@ -20,9 +21,10 @@ type FavoriteSectionListItem =
       right?: Product;
     };
 
-export const FavoritesScreen = ({ navigation }: any) => {
+export const FavoritesScreen = () => {
   // Hooks
   const styles = useStyles();
+  const { navigate } = useRouter();
 
   // Store
   const favoriteProducts = useFavoriteProductsStore((state) => state.favoriteProducts);
@@ -70,9 +72,9 @@ export const FavoritesScreen = ({ navigation }: any) => {
 
   const onPressProduct = React.useCallback(
     (product: Product) => {
-      navigation.navigate("ProductDetail", { product });
+      navigate("ProductDetail", { product });
     },
-    [navigation],
+    [navigate],
   );
 
   const renderItem: ListRenderItem<FavoriteSectionListItem> = React.useCallback(

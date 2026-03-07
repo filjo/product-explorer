@@ -47,7 +47,7 @@ export const ProductDetailScreen = () => {
   // Effects
 
   useEffect(() => {
-    navigation.setOptions({
+    (navigation as any).setOptions({
       title: "",
       headerRight: renderHeaderRight,
     });

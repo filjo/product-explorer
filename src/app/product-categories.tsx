@@ -1,5 +1,5 @@
 import { CloseButton, PrimaryButton, RootView, SecondaryButton, Text } from "@/components";
-import { useTheme } from "@/hooks";
+import { useRouter, useTheme } from "@/hooks";
 import { ProductCategory } from "@/models";
 import { useProductCategoriesStore } from "@/store";
 import { makeStyles } from "@/utils";
@@ -19,6 +19,7 @@ export const ProductCategoriesScreen = () => {
   // Hooks
   const styles = useStyles();
   const { colors } = useTheme();
+  const { goBack } = useRouter();
   const navigation = useNavigation();
 
   // Store
@@ -39,8 +40,8 @@ export const ProductCategoriesScreen = () => {
   );
 
   const navigateBack = React.useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+    goBack();
+  }, [goBack]);
 
   const onApplyPress = React.useCallback(() => {
     if (selected === ALL_CATEGORY_ITEM.slug) {
@@ -76,7 +77,7 @@ export const ProductCategoriesScreen = () => {
   }, [navigateBack]);
 
   useLayoutEffect(() => {
-    navigation.setOptions({
+    (navigation as any).setOptions({
       title: "Filter by category",
       headerRight: renderHeaderRight,
     });

@@ -1,4 +1,5 @@
 import { ProductItemCard, RootView } from "@/components";
+import { useRouter } from "@/hooks";
 import { Product } from "@/models/Product";
 import { useProducts, useProductsByCategory } from "@/queries";
 import { useFavoriteProductsStore, useProductCategoriesStore } from "@/store";
@@ -8,8 +9,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { ActivityIndicator, View } from "react-native";
 
-export const ProductsScreen = ({ navigation }: any) => {
+export const ProductsScreen = () => {
   const styles = useStyles();
+  const { navigate } = useRouter();
   // Query
 
   const queryClient = useQueryClient();
@@ -59,7 +61,7 @@ export const ProductsScreen = ({ navigation }: any) => {
       <ProductItemCard
         item={item}
         isFavorite={isFavorite}
-        onPress={(product) => navigation.navigate("ProductDetail", { product })}
+        onPress={(product) => navigate("ProductDetail", { product })}
       />
     );
   };
