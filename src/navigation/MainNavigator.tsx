@@ -3,11 +3,15 @@ import React from "react";
 
 import { ProductCategoriesScreen } from "@/app/product-categories";
 import { ProductDetailScreen } from "@/app/product-detail";
+import { useProductCategories } from "@/queries";
 import { TabNavigator } from "./TabNavigator";
 
 const Stack = createNativeStackNavigator();
 
 export const MainNavigator = () => {
+  // Queries
+  useProductCategories();
+
   return (
     <Stack.Navigator>
       <Stack.Screen name="Tabs" component={TabNavigator} options={{ headerShown: false }} />
