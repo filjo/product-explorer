@@ -34,7 +34,6 @@ export const useProductCategoriesStore = create<Store>()(
       storage: createJSONStorage(() => zustandStorage),
       partialize: (state) => ({
         categories: state.categories,
-        selectedCategorySlug: state.selectedCategorySlug,
       }),
     },
   ),
