@@ -1,5 +1,7 @@
+export * from "./close-button";
 export * from "./empty-list-view";
 export * from "./favorite-button";
+export * from "./filter-products-button";
 export * from "./primary-button";
 export * from "./product-images-carousel";
 export * from "./product-item-card";

@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 999,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#2f8897",
+    backgroundColor: theme.colors.brand,
     paddingHorizontal: theme.spacing.s5,
   },
   buttonPressed: {

@@ -3,7 +3,7 @@ import { ProductDetailsRouteParams } from "@/navigation/types";
 import { useFavoriteProductsStore } from "@/store";
 import { formatPriceWithCurrency, makeStyles } from "@/utils";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import React, { useLayoutEffect } from "react";
+import React, { useEffect } from "react";
 import { Platform, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -48,7 +48,7 @@ export const ProductDetailScreen = () => {
 
   // Effects
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       title: "",
       headerRight: renderHeaderRight,

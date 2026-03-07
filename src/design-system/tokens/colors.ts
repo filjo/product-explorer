@@ -6,6 +6,12 @@ const common = {
   info: "#007aff",
 };
 
+const brand = "#C66A43";
+const brandMuted = {
+  light: "#F5E8E1",
+  dark: "#4A2E23",
+} as const;
+
 export const colors = {
   light: {
     text: "#000000",
@@ -14,6 +20,8 @@ export const colors = {
     backgroundSelected: "#E0E1E6",
     textSecondary: "#60646C",
     ...common,
+    brand,
+    brandMuted: brandMuted.light,
   },
   dark: {
     text: "#ffffff",
@@ -22,6 +30,8 @@ export const colors = {
     backgroundSelected: "#2E3135",
     textSecondary: "#B0B4BA",
     ...common,
+    brand,
+    brandMuted: brandMuted.dark,
   },
 } as const;
 

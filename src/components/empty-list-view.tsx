@@ -2,6 +2,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { View } from "react-native";
 
+import { useTheme } from "@/hooks";
 import { makeStyles } from "@/utils";
 import { Text } from "./text";
 
@@ -18,12 +19,13 @@ export const EmptyListView = ({
   iconName = "inbox",
   children,
 }: EmptyListViewProps) => {
+  const { colors } = useTheme();
   const styles = useStyles();
 
   return (
     <View style={styles.container}>
       <View style={styles.iconContainer}>
-        <MaterialIcons name={iconName} size={28} color="#2f8897" />
+        <MaterialIcons name={iconName} size={28} color={colors.brand} />
       </View>
       <View style={styles.textContainer}>
         <Text variant="title3" style={styles.title}>
@@ -51,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 36,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#e5f3f5",
+    backgroundColor: theme.colors.brandMuted,
   },
   textContainer: {
     marginTop: theme.spacing.s4,

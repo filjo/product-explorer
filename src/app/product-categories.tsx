@@ -1,11 +1,12 @@
-import { PrimaryButton, RootView, SecondaryButton, Text } from "@/components";
+import { CloseButton, PrimaryButton, RootView, SecondaryButton, Text } from "@/components";
+import { useTheme } from "@/hooks";
 import { ProductCategory } from "@/models";
 import { useProductCategoriesStore } from "@/store";
 import { makeStyles } from "@/utils";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { Pressable, View } from "react-native";
 
 const ALL_CATEGORY_ITEM: ProductCategory = {
@@ -17,6 +18,7 @@ const ALL_CATEGORY_ITEM: ProductCategory = {
 export const ProductCategoriesScreen = () => {
   // Hooks
   const styles = useStyles();
+  const { colors } = useTheme();
   const navigation = useNavigation();
 
   // Store
@@ -62,22 +64,27 @@ export const ProductCategoriesScreen = () => {
       return (
         <Pressable style={styles.categoryItem} onPress={() => onItemPress(item.slug)}>
           <Text style={styles.categoryName}>{item.name}</Text>
-          {isSelected ? <MaterialIcons name="check" size={24} color="#2d8f9f" /> : null}
+          {isSelected ? <MaterialIcons name="check" size={24} color={colors.brand} /> : null}
         </Pressable>
       );
     },
-    [onItemPress, selected, styles.categoryItem, styles.categoryName],
+    [colors.brand, onItemPress, selected, styles.categoryItem, styles.categoryName],
   );
+
+  const renderHeaderRight = React.useCallback(() => {
+    return <CloseButton onPress={navigateBack} />;
+  }, [navigateBack]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: "Filter by category",
+      headerRight: renderHeaderRight,
+    });
+  }, [navigation, renderHeaderRight]);
 
   // Render
   return (
-    <RootView style={styles.container} edges={["bottom"]}>
-      <View style={styles.grabber} />
-      <View style={styles.headerRow}>
-        <Text variant="title2" style={styles.title}>
-          Category
-        </Text>
-      </View>
+    <RootView edges={["bottom"]}>
       <FlashList
         data={categoriesWithAll}
         renderItem={renderItem}
@@ -93,28 +100,6 @@ export const ProductCategoriesScreen = () => {
 };
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-  },
-  grabber: {
-    width: 56,
-    height: 6,
-    borderRadius: 3,
-    alignSelf: "center",
-    marginTop: theme.spacing.s3,
-    backgroundColor: "#d7d7d7",
-  },
-  title: {
-    marginTop: theme.spacing.s4,
-  },
-  headerRow: {
-    marginTop: theme.spacing.s4,
-    marginHorizontal: theme.spacing.s5,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
   listContent: {
     paddingTop: theme.spacing.s4,
     paddingBottom: theme.spacing.s5,

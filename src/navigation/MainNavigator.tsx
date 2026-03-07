@@ -29,8 +29,11 @@ export const MainNavigator = () => {
         component={ProductCategoriesScreen}
         options={{
           presentation: "modal",
-          title: "",
-          headerShown: false,
+          animation: "slide_from_bottom",
+          title: "Filter by category",
+          headerTitleAlign: "center",
+          headerBackVisible: false,
+          headerShown: true,
         }}
       />
     </Stack.Navigator>

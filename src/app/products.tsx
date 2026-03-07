@@ -1,13 +1,12 @@
-import { ProductItemCard, RootView } from "@/components";
+import { FilterProductsButton, ProductItemCard, RootView } from "@/components";
 import { Product } from "@/models/Product";
 import { useProducts, useProductsByCategory } from "@/queries";
 import { useFavoriteProductsStore, useProductCategoriesStore } from "@/store";
 import { makeStyles } from "@/utils";
-import { MaterialIcons } from "@expo/vector-icons";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { useQueryClient } from "@tanstack/react-query";
 import React, { useLayoutEffect } from "react";
-import { ActivityIndicator, Pressable, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 
 export const ProductsScreen = ({ navigation }: any) => {
   const styles = useStyles();
@@ -84,22 +83,12 @@ export const ProductsScreen = ({ navigation }: any) => {
 
   const renderHeaderRight = React.useCallback(() => {
     const isFilterActive = Boolean(selectedCategory);
-
-    return (
-      <Pressable
-        style={[styles.headerButton, isFilterActive ? styles.headerButtonActive : undefined]}
-        onPress={handleCategoriesPress}
-      >
-        <MaterialIcons name="tune" size={22} color={isFilterActive ? "#2f8897" : "#111111"} />
-      </Pressable>
-    );
-  }, [handleCategoriesPress, selectedCategory, styles.headerButton, styles.headerButtonActive]);
+    return <FilterProductsButton isFilterActive={isFilterActive} onPress={handleCategoriesPress} />;
+  }, [handleCategoriesPress, selectedCategory]);
 
   // Effects
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: "Products",
-      headerShown: true,
       headerRight: renderHeaderRight,
     });
   }, [navigation, renderHeaderRight]);
