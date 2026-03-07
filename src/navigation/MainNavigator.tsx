@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 
+import { ProductCategoriesScreen } from "@/app/product-categories";
 import { ProductDetailScreen } from "@/app/product-detail";
 import { TabNavigator } from "./TabNavigator";
 
@@ -17,6 +18,15 @@ export const MainNavigator = () => {
           title: "Product details",
           headerTransparent: true,
           headerBackButtonDisplayMode: "minimal",
+        }}
+      />
+      <Stack.Screen
+        name="ProductCategories"
+        component={ProductCategoriesScreen}
+        options={{
+          presentation: "modal",
+          title: "",
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

@@ -46,7 +46,11 @@ export const TabNavigator = () => {
         name="Products"
         component={ProductsScreen}
         options={{
+          title: "Products",
+          headerTitleAlign: "left",
+          headerShown: true,
           tabBarIcon: HomeIcon,
+          headerShadowVisible: false,
         }}
       />
       <Tab.Screen
