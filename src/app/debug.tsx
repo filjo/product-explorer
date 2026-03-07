@@ -1,46 +1,62 @@
+import { PrimaryButton, RootView, SecondaryButton, Text } from "@/components";
+import { useProductCategoriesStore } from "@/store";
+import { makeStyles } from "@/utils";
+import { useQueryClient } from "@tanstack/react-query";
 import React from "react";
-import { Button, ScrollView, StyleSheet } from "react-native";
-
-import { Text } from "@/components/text";
-import { ThemedView } from "@/components/themed-view";
-import { useProducts } from "@/queries";
+import { View } from "react-native";
 
 export const DebugScreen = () => {
-  const { data, isLoading, isFetching, error, refetch } = useProducts();
-  const firstProduct = data?.[0];
+  // Hooks
+  const styles = useStyles();
+  const queryClient = useQueryClient();
 
+  // Store
+  const clearCategories = useProductCategoriesStore((state) => state.clearCategories);
+  const clearSelectedCategory = useProductCategoriesStore((state) => state.clearSelectedCategory);
+
+  // State
+  const [lastActionMessage, setLastActionMessage] = React.useState<string | null>(null);
+
+  // Methods
+  const onClearCategoriesPress = React.useCallback(() => {
+    clearCategories();
+    clearSelectedCategory();
+    setLastActionMessage("Categories have been cleared.");
+  }, [clearCategories, clearSelectedCategory]);
+
+  const onClearQueryCachePress = React.useCallback(() => {
+    queryClient.clear();
+    setLastActionMessage("Query cache has been cleared.");
+  }, [queryClient]);
+
+  // Render
   return (
-    <ThemedView style={styles.container}>
-      <Text variant="title1">Debug Query</Text>
-      <Button title={isFetching ? "Reloading..." : "Reload Query"} onPress={() => refetch()} />
+    <RootView style={styles.container}>
+      <Text variant="title2">Debug Tools</Text>
+      <Text color="textSecondary">
+        Use these actions to clear local categories and cached queries.
+      </Text>
 
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
-        {isLoading && <Text>Loading products...</Text>}
+      <View style={styles.buttonsContainer}>
+        <PrimaryButton title="Clear Categories" onPress={onClearCategoriesPress} />
+        <SecondaryButton title="Clear Query Cache" onPress={onClearQueryCachePress} />
+      </View>
 
-        {error instanceof Error && <Text>Error: {error.message}</Text>}
-
-        {!isLoading && !error && firstProduct && (
-          <>
-            <Text variant="footnote" style={styles.labelStrong}>
-              First Product
-            </Text>
-            <Text variant="code">{JSON.stringify(firstProduct, null, 2)}</Text>
-          </>
-        )}
-
-        {!isLoading && !error && !firstProduct && <Text>No products found.</Text>}
-      </ScrollView>
-    </ThemedView>
+      {lastActionMessage ? (
+        <Text variant="footnote" color="textSecondary">
+          {lastActionMessage}
+        </Text>
+      ) : null}
+    </RootView>
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   container: {
-    flex: 1,
-    padding: 16,
-    gap: 12,
+    padding: theme.spacing.s4,
+    gap: theme.spacing.s4,
   },
-  labelStrong: {
-    fontWeight: "700",
+  buttonsContainer: {
+    gap: theme.spacing.s3,
   },
-});
+}));
