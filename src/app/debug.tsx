@@ -1,5 +1,5 @@
 import { PrimaryButton, RootView, SecondaryButton, Text } from "@/components";
-import { useProductCategoriesStore } from "@/store";
+import { useFavoriteProductsStore, useProductCategoriesStore } from "@/store";
 import { makeStyles } from "@/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import React from "react";
@@ -11,6 +11,7 @@ export const DebugScreen = () => {
   const queryClient = useQueryClient();
 
   // Store
+  const clearFavorites = useFavoriteProductsStore((state) => state.clearFavorites);
   const clearCategories = useProductCategoriesStore((state) => state.clearCategories);
   const clearSelectedCategory = useProductCategoriesStore((state) => state.clearSelectedCategory);
 
@@ -23,6 +24,11 @@ export const DebugScreen = () => {
     clearSelectedCategory();
     setLastActionMessage("Categories have been cleared.");
   }, [clearCategories, clearSelectedCategory]);
+
+  const onClearFavoritesPress = React.useCallback(() => {
+    clearFavorites();
+    setLastActionMessage("Favorites have been cleared.");
+  }, [clearFavorites]);
 
   const onClearQueryCachePress = React.useCallback(() => {
     queryClient.clear();
@@ -39,6 +45,7 @@ export const DebugScreen = () => {
 
       <View style={styles.buttonsContainer}>
         <PrimaryButton title="Clear Categories" onPress={onClearCategoriesPress} />
+        <PrimaryButton title="Clear Favorites" onPress={onClearFavoritesPress} />
         <SecondaryButton title="Clear Query Cache" onPress={onClearQueryCachePress} />
       </View>
 

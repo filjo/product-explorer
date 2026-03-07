@@ -58,6 +58,9 @@ export const TabNavigator = () => {
         component={FavoritesScreen}
         options={{
           tabBarIcon: FavoritesIcon,
+          title: "Favorites",
+          headerShown: true,
+          headerShadowVisible: false,
         }}
       />
       <Tab.Screen
