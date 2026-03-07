@@ -1,11 +1,11 @@
-import { FilterProductsButton, ProductItemCard, RootView } from "@/components";
+import { ProductItemCard, RootView } from "@/components";
 import { Product } from "@/models/Product";
 import { useProducts, useProductsByCategory } from "@/queries";
 import { useFavoriteProductsStore, useProductCategoriesStore } from "@/store";
 import { makeStyles } from "@/utils";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { useQueryClient } from "@tanstack/react-query";
-import React, { useLayoutEffect } from "react";
+import React from "react";
 import { ActivityIndicator, View } from "react-native";
 
 export const ProductsScreen = ({ navigation }: any) => {
@@ -77,22 +77,6 @@ export const ProductsScreen = ({ navigation }: any) => {
     productsQuery.fetchNextPage();
   };
 
-  const handleCategoriesPress = React.useCallback(() => {
-    navigation.navigate("ProductCategories");
-  }, [navigation]);
-
-  const renderHeaderRight = React.useCallback(() => {
-    const isFilterActive = Boolean(selectedCategory);
-    return <FilterProductsButton isFilterActive={isFilterActive} onPress={handleCategoriesPress} />;
-  }, [handleCategoriesPress, selectedCategory]);
-
-  // Effects
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: renderHeaderRight,
-    });
-  }, [navigation, renderHeaderRight]);
-
   if (isPending && !isManualRefreshing) {
     return (
       <RootView style={{ justifyContent: "center", alignItems: "center" }}>
@@ -125,15 +109,5 @@ const useStyles = makeStyles((theme) => ({
   listContent: {
     backgroundColor: theme.colors.background,
     paddingHorizontal: 10,
-  },
-  headerButton: {
-    width: 36,
-    height: 36,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 18,
-  },
-  headerButtonActive: {
-    backgroundColor: "#e5f3f5",
   },
 }));

@@ -5,7 +5,6 @@ import { formatPriceWithCurrency, makeStyles } from "@/utils";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect } from "react";
 import { Platform, ScrollView, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export const ProductDetailScreen = () => {
   // Hooks
@@ -25,8 +24,6 @@ export const ProductDetailScreen = () => {
     [favoriteProducts, product.id],
   );
 
-  const { top } = useSafeAreaInsets();
-
   // Methods
   const handleFavoritePress = React.useCallback(() => {
     toggleFavorite(product);
@@ -35,6 +32,7 @@ export const ProductDetailScreen = () => {
   const renderHeaderRight = React.useCallback(() => {
     return (
       <FavoriteButton
+        type="navigation"
         style={Platform.select({
           ios: undefined,
           android: { width: 40, height: 40, borderRadius: 20 },

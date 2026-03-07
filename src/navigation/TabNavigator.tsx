@@ -2,6 +2,8 @@ import { BottomTabIcon, createBottomTabNavigator } from "@react-navigation/botto
 import React from "react";
 
 import { DebugScreen, FavoritesScreen, ProductsScreen } from "@/app";
+import { FilterProductsButton } from "@/components";
+import { useProductCategoriesStore } from "@/store";
 import { Platform } from "react-native";
 
 const Tab = createBottomTabNavigator();
@@ -40,18 +42,27 @@ const DebugIcon: BottomTabIcon | undefined = Platform.select({
 });
 
 export const TabNavigator = () => {
+  const selectedCategory = useProductCategoriesStore((state) => state.selectedCategorySlug);
+  const isFilterActive = Boolean(selectedCategory);
+
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
         name="Products"
         component={ProductsScreen}
-        options={{
+        options={({ navigation }) => ({
           title: "Products",
           headerTitleAlign: "left",
           headerShown: true,
           tabBarIcon: HomeIcon,
           headerShadowVisible: false,
-        }}
+          headerRight: () => (
+            <FilterProductsButton
+              isFilterActive={isFilterActive}
+              onPress={() => (navigation.getParent() as any)?.navigate("ProductCategories")}
+            />
+          ),
+        })}
       />
       <Tab.Screen
         name="Favorites"

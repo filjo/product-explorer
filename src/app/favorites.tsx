@@ -68,15 +68,6 @@ export const FavoritesScreen = ({ navigation }: any) => {
     return items;
   }, [favoriteProducts]);
 
-  const stickyHeaderIndices = React.useMemo(() => {
-    return sectionedItems.reduce<number[]>((indices, item, index) => {
-      if (item.type === "header") {
-        indices.push(index);
-      }
-      return indices;
-    }, []);
-  }, [sectionedItems]);
-
   const onPressProduct = React.useCallback(
     (product: Product) => {
       navigation.navigate("ProductDetail", { product });

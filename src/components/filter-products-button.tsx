@@ -1,35 +1,41 @@
 import { useTheme } from "@/hooks";
-import { makeStyles } from "@/utils";
 import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
-import { Pressable } from "react-native";
+import { Platform } from "react-native";
+import { NavigationBarItem } from "./navigation-bar-item";
 
 interface FilterProductsButtonProps {
   isFilterActive: boolean;
   onPress: () => void;
 }
 
-export const FilterProductsButton = ({ isFilterActive, onPress }: FilterProductsButtonProps) => {
+export const FilterProductsButtonComponent = ({
+  isFilterActive,
+  onPress,
+}: FilterProductsButtonProps) => {
   // Hooks
-  const styles = useStyles();
   const theme = useTheme();
-  const backgroundColor = isFilterActive ? theme.colors.brandMuted : theme.colors.background;
   const iconColor = isFilterActive ? theme.colors.brand : theme.colors.text;
+  const paddingHorizontal = Platform.select({
+    ios: theme.spacing.s3,
+  });
+  const marginRight = Platform.select({
+    android: theme.spacing.s3,
+  });
+  const iconPaddingHorizontal = Platform.select({
+    ios: theme.spacing.s1,
+  });
   // Render
   return (
-    <Pressable style={[styles.button, { backgroundColor }]} onPress={onPress}>
-      <MaterialIcons name="tune" size={24} color={iconColor} />
-    </Pressable>
+    <NavigationBarItem style={{ paddingHorizontal, marginRight }} onPress={onPress}>
+      <MaterialIcons
+        style={{ paddingHorizontal: iconPaddingHorizontal }}
+        name="tune"
+        size={20}
+        color={iconColor}
+      />
+    </NavigationBarItem>
   );
 };
 
-const useStyles = makeStyles((theme) => ({
-  button: {
-    padding: 10,
-    borderRadius: 999,
-    backgroundColor: theme.colors.background,
-    alignItems: "center",
-    justifyContent: "center",
-    elevation: 7,
-  },
-}));
+export const FilterProductsButton = React.memo(FilterProductsButtonComponent);

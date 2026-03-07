@@ -23,7 +23,7 @@ export const ProductItemCard = ({ item, isFavorite, onPress }: ProductItemCardPr
     <TouchableOpacity onPress={() => onPress(item)} style={styles.card}>
       <View style={styles.imageContainer}>
         <Image source={{ uri: item.thumbnail }} style={styles.image} contentFit="contain" />
-        <FavoriteButton disabled={true} isLiked={isFavorite} />
+        <FavoriteButton type="card" disabled={true} isLiked={isFavorite} />
       </View>
 
       <View style={styles.content}>
