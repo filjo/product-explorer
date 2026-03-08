@@ -61,6 +61,7 @@ export const ProductsScreen = () => {
       <ProductItemCard
         item={item}
         isFavorite={isFavorite}
+        testID="products-product-card"
         onPress={(product) => navigate("ProductDetail", { product })}
       />
     );

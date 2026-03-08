@@ -13,13 +13,14 @@ type ProductItemCardProps = {
   item: Product;
   isFavorite: boolean;
   onPress: (product: Product) => void;
+  testID?: string;
 };
 
-export const ProductItemCard = ({ item, isFavorite, onPress }: ProductItemCardProps) => {
+export const ProductItemCard = ({ item, isFavorite, onPress, testID }: ProductItemCardProps) => {
   const styles = useStyles();
 
   return (
-    <Pressable onPress={() => onPress(item)} style={styles.card}>
+    <Pressable testID={testID} onPress={() => onPress(item)} style={styles.card}>
       <View style={styles.imageContainer}>
         <Image source={{ uri: item.thumbnail }} style={styles.image} contentFit="contain" />
         <FavoriteButton type="card" disabled={true} isLiked={isFavorite} />

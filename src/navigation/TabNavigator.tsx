@@ -67,6 +67,7 @@ export const TabNavigator = () => {
           headerTitleAlign: "left",
           headerShown: true,
           tabBarIcon: HomeIcon,
+          tabBarButtonTestID: "tab-products",
           headerShadowVisible: false,
           headerRight: () => <FilterProductsHeaderButton isFilterActive={isFilterActive} />,
         })}
@@ -77,6 +78,7 @@ export const TabNavigator = () => {
         options={{
           tabBarIcon: FavoritesIcon,
           title: "Favorites",
+          tabBarButtonTestID: "tab-favorites",
           headerShown: true,
           headerShadowVisible: false,
         }}
@@ -86,6 +88,7 @@ export const TabNavigator = () => {
         component={DebugScreen}
         options={{
           tabBarIcon: DebugIcon,
+          tabBarButtonTestID: "tab-debug",
         }}
       />
     </Tab.Navigator>

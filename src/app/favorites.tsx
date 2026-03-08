@@ -100,6 +100,7 @@ export const FavoritesScreen = () => {
             <ProductItemCard
               item={item.left}
               isFavorite={leftIsFavorite}
+              testID="favorites-product-card"
               onPress={onPressProduct}
             />
           </View>
@@ -108,6 +109,7 @@ export const FavoritesScreen = () => {
               <ProductItemCard
                 item={item.right}
                 isFavorite={rightIsFavorite}
+                testID="favorites-product-card"
                 onPress={onPressProduct}
               />
             </View>
