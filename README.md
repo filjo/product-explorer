@@ -1,56 +1,126 @@
-# Welcome to your Expo app 👋
+# ProductExplorer
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Mobile app for browsing products, viewing details, and managing favorites.
 
-## Get started
+## Project configuration
+
+Core app configuration is defined in `app.config.ts`:
+
+- App name/slug: `ProductExplorer`
+- iOS bundle id: `com.productexplorer.app`
+- Android package: `com.productexplorer.app`
+- Version: `1.0.0`
+- Orientation: portrait
+- Deep link scheme: `productexplorer`
+- Build plugins: `expo-localization`, `expo-splash-screen`, `expo-build-properties`
+
+## Tech stack
+
+- Expo SDK 55
+- React Native 0.83
+- React Navigation
+- React Query
+- Zustand
+- Jest + Testing Library
+- Detox (E2E)
+
+## Requirements
+
+- Node.js 20+
+- `pnpm` (project uses `pnpm@10.17.1`)
+- Xcode (for iOS)
+- Android Studio + SDK/emulator (for Android)
+- Watchman (recommended on macOS)
+
+## Quick start for new developers
 
 1. Install dependencies
 
    ```bash
-   npm install
+   pnpm install
    ```
 
-2. Start the app
+2. Start Metro
 
    ```bash
-   npx expo start
+   pnpm start
    ```
 
-In the output, you'll find options to open the app in a
+3. Run the app
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   ```bash
+   pnpm ios
+   # or
+   pnpm android
+   ```
 
-You can start developing by editing `App.tsx` and screens in `src/app`. This project uses [React Navigation](https://reactnavigation.org/docs/getting-started).
-
-## Get a fresh project
-
-When you're ready, run:
+## Development commands
 
 ```bash
-npm run reset-project
+pnpm lint
+pnpm lint:fix
+pnpm format
+pnpm format:check
+pnpm test
+pnpm test:watch
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Tests
 
-### Other setup steps
+### Unit/integration tests
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```bash
+pnpm test
+```
 
-## Learn more
+Pre-commit hook runs:
 
-To learn more about developing your project with Expo, look at the following resources:
+1. `lint-staged`
+2. `jest` (bail + runInBand)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+So commits fail when tests fail.
 
-## Join the community
+### Detox E2E
 
-Join our community of developers creating universal apps.
+Detox config: `.detoxrc.js`  
+Detox Jest config: `e2e/jest.config.js`
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Build and run iOS debug E2E:
+
+```bash
+pnpm e2e:build:ios:debug
+pnpm e2e:test:ios:debug
+```
+
+Current E2E scenario:
+
+- Launch app
+- Open first product
+- Add product to favorites
+- Relaunch app
+- Open Favorites tab
+- Verify favorite state is persisted
+
+## Screenshots
+
+Add screenshots under `docs/screenshots/` using the file names below:
+
+- `docs/screenshots/ios-products.png`
+- `docs/screenshots/ios-product-detail.png`
+- `docs/screenshots/android-products.png`
+- `docs/screenshots/android-product-detail.png`
+
+Then they will render here:
+
+### iOS
+
+<div style="overflow-x: auto; white-space: nowrap; padding-bottom: 8px;">
+  <img src="docs/screenshots/ios-products.png" alt="iOS Products" style="height: 400px; margin-right: 12px;" />
+  <img src="docs/screenshots/ios-product-detail.png" alt="iOS Product Detail" style="height: 400px; margin-right: 12px;" />
+  <img src="docs/screenshots/ios-favorites.png" alt="iOS Favorites" style="height: 400px; margin-right: 12px;" />
+  <img src="docs/screenshots/ios-categories.png" alt="iOS Categories" style="height: 400px; margin-right: 12px;" />
+</div>
+
+### Android
+
+Screenshots to be uploaded...
