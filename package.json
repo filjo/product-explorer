@@ -19,7 +19,16 @@
     "commit": "git-cz",
     "prepare": "husky",
     "e2e:test:ios:debug": "detox test --configuration ios.sim.debug",
-    "e2e:build:ios:debug": "detox build --configuration ios.sim.debug"
+    "e2e:build:ios:debug": "detox build --configuration ios.sim.debug",
+    "build:ios:development": "eas build --platform ios --profile development",
+    "build:ios:adhoc": "eas build --platform ios --profile adhoc",
+    "build:ios:production": "eas build --platform ios --profile production",
+    "build:android:development": "eas build --platform android --profile development",
+    "build:android:adhoc": "eas build --platform android --profile adhoc",
+    "build:android:production": "eas build --platform android --profile production",
+    "submit:ios:development": "eas submit --platform ios --profile development --latest",
+    "submit:ios:adhoc": "eas submit --platform ios --profile adhoc --latest",
+    "submit:ios:production": "eas submit --platform ios --profile production --latest"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "8.0.0-alpha.16",

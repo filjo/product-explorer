@@ -54,6 +54,38 @@ Core app configuration is defined in `app.config.ts`:
    pnpm android
    ```
 
+## EAS build and submit (iOS + Android)
+
+1. Log in to Expo (one time per machine/session as needed):
+
+   ```bash
+   pnpm dlx eas login
+   ```
+
+2. Build with EAS using the project scripts:
+
+   ```bash
+   # iOS
+   pnpm build:ios:development
+   pnpm build:ios:adhoc
+   pnpm build:ios:production
+
+   # Android
+   pnpm build:android:development
+   pnpm build:android:adhoc
+   pnpm build:android:production
+   ```
+
+3. Submit iOS builds with matching submit scripts:
+
+   ```bash
+   pnpm submit:ios:development
+   pnpm submit:ios:adhoc
+   pnpm submit:ios:production
+   ```
+
+`eas.json` is preconfigured with `development`, `adhoc`, and `production` profiles. Build scripts exist for iOS and Android, and submit scripts are currently set up for iOS.
+
 ## Development commands
 
 ```bash
