@@ -139,8 +139,12 @@ Add screenshots under `docs/screenshots/` using the file names below:
 
 - `docs/screenshots/ios-products.png`
 - `docs/screenshots/ios-product-detail.png`
+- `docs/screenshots/ios-favorites.png`
+- `docs/screenshots/ios-categories.png`
 - `docs/screenshots/android-products.png`
 - `docs/screenshots/android-product-detail.png`
+- `docs/screenshots/android-favorites.png`
+- `docs/screenshots/android-categories.png`
 
 Then they will render here:
 
@@ -155,4 +159,9 @@ Then they will render here:
 
 ### Android
 
-Screenshots to be uploaded...
+<div style="overflow-x: auto; white-space: nowrap; padding-bottom: 8px;">
+  <img src="docs/screenshots/android-products.png" alt="Android Products" style="height: 400px; margin-right: 12px;" />
+  <img src="docs/screenshots/android-product-detail.png" alt="Android Product Detail" style="height: 400px; margin-right: 12px;" />
+  <img src="docs/screenshots/android-favorites.png" alt="Android Favorites" style="height: 400px; margin-right: 12px;" />
+  <img src="docs/screenshots/android-categories.png" alt="Android Categories" style="height: 400px; margin-right: 12px;" />
+</div>
