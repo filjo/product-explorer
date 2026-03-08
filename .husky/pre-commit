@@ -1,1 +1,1 @@
-pnpm lint-staged
+pnpm lint-staged && pnpm exec jest --watchman=false --bail --runInBand --forceExit

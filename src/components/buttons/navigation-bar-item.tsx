@@ -10,10 +10,12 @@ export const NavigationBarItem = ({
   children,
   onPress,
   style,
+  testID,
 }: {
   children: React.ReactNode;
   onPress: () => void;
   style?: StyleProp<ViewStyle>;
+  testID?: string;
 }) => {
   const styles = useStyles();
   const buttonStyle = Platform.select({
@@ -22,14 +24,19 @@ export const NavigationBarItem = ({
 
   if (Platform.OS === "android") {
     return (
-      <TouchableOpacity activeOpacity={0.8} onPress={onPress} style={[buttonStyle, style]}>
+      <TouchableOpacity
+        testID={testID}
+        activeOpacity={0.8}
+        onPress={onPress}
+        style={[buttonStyle, style]}
+      >
         {children}
       </TouchableOpacity>
     );
   }
 
   return (
-    <Pressable onPress={onPress} style={[style]} hitSlop={8}>
+    <Pressable testID={testID} onPress={onPress} style={[style]} hitSlop={8}>
       {children}
     </Pressable>
   );

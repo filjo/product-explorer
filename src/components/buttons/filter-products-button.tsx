@@ -7,11 +7,13 @@ import { NavigationBarItem } from "./navigation-bar-item";
 interface FilterProductsButtonProps {
   isFilterActive: boolean;
   onPress: () => void;
+  testID?: string;
 }
 
 export const FilterProductsButtonComponent = ({
   isFilterActive,
   onPress,
+  testID = "filter-products-button",
 }: FilterProductsButtonProps) => {
   // Hooks
   const theme = useTheme();
@@ -27,8 +29,9 @@ export const FilterProductsButtonComponent = ({
   });
   // Render
   return (
-    <NavigationBarItem style={{ paddingHorizontal, marginRight }} onPress={onPress}>
+    <NavigationBarItem testID={testID} style={{ paddingHorizontal, marginRight }} onPress={onPress}>
       <MaterialIcons
+        testID={`${testID}-icon`}
         style={{ paddingHorizontal: iconPaddingHorizontal }}
         name="tune"
         size={20}

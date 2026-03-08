@@ -9,6 +9,7 @@ type SecondaryButtonProps = {
   onPress: () => void;
   disabled?: boolean;
   style?: StyleProp<ViewStyle>;
+  testID?: string;
 };
 
 const SecondaryButtonComponent = ({
@@ -16,11 +17,13 @@ const SecondaryButtonComponent = ({
   onPress,
   disabled = false,
   style,
+  testID = "secondary-button",
 }: SecondaryButtonProps) => {
   const styles = useStyles();
 
   return (
     <TouchableOpacity
+      testID={testID}
       onPress={onPress}
       disabled={disabled}
       style={[styles.button, disabled ? styles.buttonDisabled : undefined, style]}

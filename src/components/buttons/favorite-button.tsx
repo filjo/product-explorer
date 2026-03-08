@@ -13,6 +13,7 @@ type FavoriteButtonProps = {
   onPress?: () => void;
   size?: number;
   style?: StyleProp<ViewStyle>;
+  testID?: string;
 };
 
 const FavoriteButtonComponent = ({
@@ -22,6 +23,7 @@ const FavoriteButtonComponent = ({
   onPress,
   size = 24,
   style,
+  testID = type === "navigation" ? "favorite-button-navigation" : "favorite-button-card",
 }: FavoriteButtonProps) => {
   // Hooks
   const styles = useStyles();
@@ -30,15 +32,21 @@ const FavoriteButtonComponent = ({
 
   if (type === "navigation") {
     return (
-      <NavigationBarItem onPress={onPress ?? (() => {})}>
-        <MaterialIcons name={name} size={size} color={color} />
+      <NavigationBarItem testID={testID} onPress={onPress ?? (() => {})}>
+        <MaterialIcons testID={`${testID}-icon`} name={name} size={size} color={color} />
       </NavigationBarItem>
     );
   }
 
   return (
-    <Pressable onPress={onPress} hitSlop={15} style={[styles.pressable, style]} disabled={disabled}>
-      <MaterialIcons name={name} size={size} color={color} />
+    <Pressable
+      testID={testID}
+      onPress={onPress}
+      hitSlop={15}
+      style={[styles.pressable, style]}
+      disabled={disabled}
+    >
+      <MaterialIcons testID={`${testID}-icon`} name={name} size={size} color={color} />
     </Pressable>
   );
 };

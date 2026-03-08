@@ -9,6 +9,7 @@ type PrimaryButtonProps = {
   onPress: () => void;
   disabled?: boolean;
   style?: StyleProp<ViewStyle>;
+  testID?: string;
 };
 
 const PrimaryButtonComponent = ({
@@ -16,11 +17,13 @@ const PrimaryButtonComponent = ({
   onPress,
   disabled = false,
   style,
+  testID = "primary-button",
 }: PrimaryButtonProps) => {
   const styles = useStyles();
 
   return (
     <TouchableOpacity
+      testID={testID}
       onPress={onPress}
       disabled={disabled}
       style={[styles.button, disabled ? styles.buttonDisabled : undefined, style]}
