@@ -1,4 +1,7 @@
 /** @type {import('@jest/types').Config.InitialOptions} */
+require("dotenv").config();
+const APP_NAME = process.env.APP_NAME || "ProductExplorer";
+
 module.exports = {
   testRunner: {
     args: {
@@ -12,15 +15,13 @@ module.exports = {
   apps: {
     "ios.debug": {
       type: "ios.app",
-      binaryPath: "ios/build/Build/Products/Debug-iphonesimulator/ProductExplorer.app",
-      build:
-        "xcodebuild -workspace ios/ProductExplorer.xcworkspace -scheme ProductExplorer -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+      binaryPath: `ios/build/Build/Products/Debug-iphonesimulator/${APP_NAME}.app`,
+      build: `xcodebuild -workspace ios/${APP_NAME}.xcworkspace -scheme ${APP_NAME} -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build`,
     },
     "ios.release": {
       type: "ios.app",
-      binaryPath: "ios/build/Build/Products/Release-iphonesimulator/ProductExplorer.app",
-      build:
-        "xcodebuild -workspace ios/ProductExplorer.xcworkspace -scheme ProductExplorer -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
+      binaryPath: `ios/build/Build/Products/Release-iphonesimulator/${APP_NAME}.app`,
+      build: `xcodebuild -workspace ios/${APP_NAME}.xcworkspace -scheme ${APP_NAME} -configuration Release -sdk iphonesimulator -derivedDataPath ios/build`,
     },
     "android.debug": {
       type: "android.apk",

@@ -1,5 +1,7 @@
 import type { ExpoConfig } from "expo/config";
+import "dotenv/config";
 
+const APP_NAME = process.env.APP_NAME ?? "ProductExplorer";
 const packageName = "com.productexplorer.app";
 const version = "1.0.0";
 const buildNumber = 1;
@@ -7,8 +9,8 @@ const buildNumber = 1;
 // Config
 
 const config: ExpoConfig = {
-  name: "ProductExplorer",
-  slug: "ProductExplorer",
+  name: APP_NAME,
+  slug: APP_NAME,
   version: version,
   orientation: "portrait",
   icon: "./assets/images/icon.png",

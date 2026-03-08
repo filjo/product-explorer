@@ -72,6 +72,7 @@
     "@types/react": "~19.2.2",
     "babel-preset-expo": "^55.0.10",
     "detox": "^20.47.0",
+    "dotenv": "^17.3.1",
     "eslint": "^9.39.3",
     "eslint-config-expo": "~55.0.0",
     "eslint-config-prettier": "^10.1.8",
